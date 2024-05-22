@@ -31,5 +31,10 @@ public class AddDataActivity extends AppCompatActivity {
         String name = addName.getText().toString();
         String height = addHeight.getText().toString();
         String imageUrl = addUrl.getText().toString();
+
+        intent.putExtra("name", name);
+        intent.putExtra("height", height);
+        intent.putExtra("url", imageUrl);
+        setResult(RESULT_OK, intent);
     }
 }
