@@ -24,6 +24,15 @@ public class AddDataActivity extends AppCompatActivity {
         addHeight = findViewById(R.id.edAddHeight);
         addUrl = findViewById(R.id.edaddImgURL);
 
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        String height = intent.getStringExtra("height");
+        String url = intent.getStringExtra("url");
+
+        addName.setText(name);
+        addHeight.setText(height);
+        addUrl.setText(url);
+
 
     }
     public void addData (View view){

@@ -25,6 +25,7 @@
         android:onClick="addData"
         android:text="Button"
         app:layout_constraintBottom_toTopOf="@+id/rvMyData"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="151dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
