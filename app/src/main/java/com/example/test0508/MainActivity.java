@@ -25,15 +25,26 @@ public class MainActivity extends UpdateActivity {
     //建立一個 ActivityResultContract 可以接收 addDataActivity 的資料
     private ActivityResultLauncher<Intent> activityResultLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result != null) {
+                Log.d("DDDDD", "onActivityResult");
+                if (result != null) { //addDataActivity 有回傳資料
                     Intent data = result.getData();
                     String name = data.getStringExtra("name");
                     String height = data.getStringExtra("height");
                     String url = data.getStringExtra("url");
-                    Log.d("MainActivity", "name: " + name + " height: " + height + " url: " + url);
+                    Log.d("DDDDD", "name: " + name + " height: " + height + " url: " + url);
                     stuDataList.add(new StuData(url, name, height));
                     adapter.notifyDataSetChanged();
                 }
+                if (result.getResultCode() == 100) {
+                    Intent data = result.getData();
+                    String name = data.getStringExtra("name");
+                    String height = data.getStringExtra("height");
+                    String url = data.getStringExtra("url");
+                    Log.d("DDDDD", "name: " + name + " height: " + height + " url: " + url);
+                    stuDataList.add(new StuData(url, name, height));
+                    adapter.notifyDataSetChanged();
+                }
+                Log.d("DDDDD", "onActivityResult: " + stuDataList.size());
             });
 
     @Override
@@ -59,6 +70,22 @@ public class MainActivity extends UpdateActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        adapter.setOnItemClickListener(new StuDataAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
+                intent.putExtra("name", stuDataList.get(position).getName());
+                intent.putExtra("height", stuDataList.get(position).getHeight());
+                intent.putExtra("imageUrl", stuDataList.get(position).getImageUrl());
+                intent.putExtra("position", position);
+                Log.d("DDDDD", "position: " + position);
+                Log.d("DDDDD", "name: " + stuDataList.get(position).getName());
+                //Log.d("DDDDD", "onItemClick: " + position);
+                Log.d("DDDDD", "onItemClick: " + stuDataList.size());
+                activityResultLauncher.launch(intent);
+            }
+        });
+
     }
 
     public void addData(View view) {
@@ -70,12 +97,5 @@ public class MainActivity extends UpdateActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            String name = data.getStringExtra("name");
-            String height = data.getStringExtra("height");
-            String imageUrl = data.getStringExtra("imageUrl");
-            stuDataList.add(new StuData(imageUrl, name, height));
-            adapter.notifyDataSetChanged();
-        }
     }
 }
